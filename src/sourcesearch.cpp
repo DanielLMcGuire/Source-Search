@@ -17,6 +17,8 @@
 #include <vector>
 #include <filesystem>
 #include <deque>
+#include <regex>
+#include <algorithm>
 
 namespace fs = std::filesystem;
 
@@ -40,7 +42,7 @@ std::vector<std::string> findWordsInFile(const std::string& filePath, const std:
         return resultLines;
     }
 
-    // Buffer for storing lines and their numbers
+    std::string fileName = filePath.substr(filePath.find_last_of("/\\") + 1);
     std::deque<std::string> buffer;
     std::string line;
     int lineNumber = 0;
@@ -49,17 +51,19 @@ std::vector<std::string> findWordsInFile(const std::string& filePath, const std:
         buffer.push_back(line);
         lineNumber++;
 
-        if (buffer.size() > 5) { // Buffer size for 2 lines before, 1 current, and 2 lines after
+        if (buffer.size() > 5) {
             buffer.pop_front();
         }
 
-        // Check if the current line contains any search words
         for (const auto& word : searchWords) {
             if (line.find(word) != std::string::npos) {
+                // Print to console
+                std::cout << "Match found in file: " << fileName << " on line " << lineNumber << " with word: " << word << std::endl;
+
                 // Output context lines
                 int startLine = std::max(0, lineNumber - static_cast<int>(buffer.size()));
                 for (int i = startLine; i < lineNumber; ++i) {
-                    resultLines.push_back(filePath + ": Line " + std::to_string(i + 1) + ": " + buffer[i - startLine]);
+                    resultLines.push_back(fileName + ": Line " + std::to_string(i + 1) + ": " + buffer[i - startLine] + " [Matched word: " + word + "]");
                 }
                 break;
             }
@@ -70,13 +74,46 @@ std::vector<std::string> findWordsInFile(const std::string& filePath, const std:
 }
 
 
+
+// Function to generate a new output file name with an incremented suffix
+std::string getNewFileName(const std::string& baseFileName, int index) {
+    std::string::size_type pos = baseFileName.find_last_of('.');
+    std::string baseName = baseFileName.substr(0, pos);
+    std::string extension = (pos != std::string::npos) ? baseFileName.substr(pos + 1) : "";
+
+    std::string newFileName = baseName + std::to_string(index);
+    if (!extension.empty()) {
+        newFileName += "." + extension;
+    } else {
+        newFileName += ".txt";
+    }
+
+    return newFileName;
+}
+
 // Search a directory for files containing specified words and write results to an output file
 void searchDirectory(const std::string& directory, const std::set<std::string>& searchWords, const std::string& outputFile, const std::vector<std::string>& extensions) {
-    std::ofstream outFile(outputFile);
-    if (!outFile.is_open()) {
-        std::cerr << "Error opening output file: " << outputFile << std::endl;
-        return;
-    }
+    int maxLinesPerFile = 950;
+    int fileIndex = 1;
+    int currentLineCount = 0;
+    std::ofstream outFile;
+
+    auto openNewFile = [&]() {
+        if (outFile.is_open()) {
+            outFile.close();
+        }
+        std::string newFileName = getNewFileName(outputFile, fileIndex);
+        outFile.open(newFileName);
+        if (!outFile.is_open()) {
+            std::cerr << "Error opening output file: " << newFileName << std::endl;
+            exit(1);
+        }
+        std::cout << "Created new file: " << newFileName << std::endl; // Log new file creation
+        currentLineCount = 0;
+        fileIndex++;
+    };
+
+    openNewFile(); // Open the first output file
 
     for (const auto& entry : fs::recursive_directory_iterator(directory)) {
         if (!entry.is_regular_file()) continue;
@@ -84,22 +121,31 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
         std::string filePath = entry.path().string();
         std::string fileExtension = entry.path().extension().string();
 
-        // Strip the period from the file extension
         if (!fileExtension.empty() && fileExtension[0] == '.') {
             fileExtension = fileExtension.substr(1);
         }
 
-        // Ensure fileExtension is std::string
         std::string searchExtension = fileExtension;
 
         if (std::find(extensions.begin(), extensions.end(), searchExtension) != extensions.end()) {
             auto matchingLines = findWordsInFile(filePath, searchWords);
             for (const auto& line : matchingLines) {
+                if (currentLineCount >= maxLinesPerFile) {
+                    openNewFile();
+                }
                 outFile << line << std::endl;
+                currentLineCount++;
             }
         }
     }
+
+    if (outFile.is_open()) {
+        outFile.close();
+    }
+
+    std::cout << "Done! Results are in files starting with " << outputFile << std::endl;
 }
+
 
 
 
