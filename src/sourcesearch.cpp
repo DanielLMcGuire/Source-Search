@@ -162,16 +162,30 @@ int main(int argc, char* argv[]) {
 
     // File extensions to search
     std::vector<std::string> sourceCodeExtensions = {
-        "c", "cpp", "h", "hpp", "cc", "cxx", "hxx",
-        "java", "class",
-        "py",
-        "js", "jsx",
-        "rb",
+        "c", "cpp", "h", "hpp", "cc", "cxx", "hxx", // C and C++
+        "java", "class", // Java
+        "py", "pyc";  // Python
+        "js", "jsx",  // JavaScript
+        "ts", "tsx",  // tbh idk
+        "rb",         // again, idk lol
         "php",
         "go",
         "rs",
         "swift",
-        "ts", "tsx"
+        "cs",         // C#
+        "m", "mm",    // Objective-C, Objective-C++
+        "kt", "kts",  // Kotlin
+        "scala",
+        "sh", "bat".         // Shell scripts
+        "pl", "pm",   // Perl
+        "lua",
+        "r",          // R language
+        "sql",
+        "html", "htm",// HTML
+        "css",
+        "xml",
+        "json",
+        "yaml", "yml" // YAML
     };
 
     auto searchWords = loadSearchWords(searchWordsFile);
