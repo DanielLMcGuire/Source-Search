@@ -11,11 +11,11 @@ source=("https://github.com/DanielLMcGuire/Source-Scanner/archive/refs/tags/${pk
 md5sums=('SKIP')  # Bypass checksum verification for testing
 
 build() {
-  cd "$srcdir/${pkgname}-${pkgver}"
+  cd "$srcdir/Source-Scanner-${pkgver}"
   make
 }
 
 package() {
-  cd "$srcdir/${pkgname}-${pkgver}"
+  cd "$srcdir/Source-Scanner-${pkgver}"
   install -Dm755 "bin/sourcesearch.out" "$pkgdir/usr/bin/sourcesearch"
 }
