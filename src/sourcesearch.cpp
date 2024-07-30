@@ -1,4 +1,14 @@
+/*
+file: sourcesearch.cpp
+Program: Source Search (C++)
 
+Writer: (Originally) Andrew M.
+Porter: Daniel McGuire (from Python) (Original is at ../py)
+
+Purpose: Search Source Code for Words.
+*/
+
+// Includes
 #include <iostream>
 #include <fstream>
 #include <sstream>

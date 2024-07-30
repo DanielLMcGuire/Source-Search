@@ -1,3 +1,12 @@
+#
+#file: sourcesearch.py
+#Program: Source Search (Python)
+#
+#Writer: Andrew M.
+#
+#Purpose: Search Source Code for Words.
+
+# Imports
 import os
 import logging
 
@@ -6,12 +15,12 @@ logging.basicConfig(filename='processing.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 def load_curse_words(file_path):
-    """Load curse words from a file and return a set of words."""
+    """Load words from a file and return a set of words."""
     with open(file_path, 'r') as file:
         return {line.strip().lower() for line in file if line.strip()}
 
 def find_curse_words_in_file(file_path, curse_words):
-    """Find and return lines from a file that contain any of the curse words."""
+    """Find and return lines from a file that contain any of the words."""
     matching_lines = []
     try:
         with open(file_path, 'r', errors='ignore') as file:
@@ -24,7 +33,7 @@ def find_curse_words_in_file(file_path, curse_words):
     return matching_lines
 
 def search_directory(directory, curse_words, output_file, extensions):
-    """Search through files in a directory for curse words and write results to output file."""
+    """Search through files in a directory for words and write results to output file."""
     with open(output_file, 'w') as outfile:
         for root, _, files in os.walk(directory):
             for file_name in files:
