@@ -1,6 +1,6 @@
 # Compiler Options
 CXX = g++
-CXXFLAGS = -Wall -std=c++23
+CXXFLAGS = -Wall -std=c++17
 
 SRC_DIR = ./src
 OBJ_DIR = ./obj
