@@ -3,6 +3,7 @@ file: sourcesearch.cpp
 Program: Source Search (C++)
 
 Writer: (Originally) Andrew M.
+
 Porter: Daniel McGuire (from Python) (Original is at ../py)
 
 Purpose: Search Source Code for Words.
@@ -19,19 +20,19 @@ Purpose: Search Source Code for Words.
 
 namespace fs = std::filesystem;
 
-// Load words from a file (obv previously for curse words lol)
-std::set<std::string> loadCurseWords(const std::string& filePath) {
-    std::set<std::string> curseWords;
+// Load words from a file
+std::set<std::string> loadSearchWords(const std::string& filePath) {
+    std::set<std::string> searchWords;
     std::ifstream file(filePath);
     std::string word;
     while (file >> word) {
-        curseWords.insert(word);
+        searchWords.insert(word);
     }
-    return curseWords;
+    return searchWords;
 }
 
 // Find words in a file and return matching lines
-std::vector<std::string> findCurseWordsInFile(const std::string& filePath, const std::set<std::string>& curseWords) {
+std::vector<std::string> findWordsInFile(const std::string& filePath, const std::set<std::string>& searchWords) {
     std::vector<std::string> matchingLines;
     std::ifstream file(filePath);
     std::string line;
@@ -39,7 +40,7 @@ std::vector<std::string> findCurseWordsInFile(const std::string& filePath, const
         std::istringstream iss(line);
         std::string word;
         while (iss >> word) {
-            if (curseWords.find(word) != curseWords.end()) {
+            if (searchWords.find(word) != searchWords.end()) {
                 matchingLines.push_back(filePath + ": " + line);
                 break;
             }
@@ -48,46 +49,55 @@ std::vector<std::string> findCurseWordsInFile(const std::string& filePath, const
     return matchingLines;
 }
 
-// Search a directory for files containing curse words and write results to an output file
-void searchDirectory(const std::string& directory, const std::set<std::string>& curseWords, const std::string& outputFile, const std::vector<std::string>& extensions) {
+// Search a directory for files containing specified words and write results to an output file
+void searchDirectory(const std::string& directory, const std::set<std::string>& searchWords, const std::string& outputFile, const std::vector<std::string>& extensions) {
     std::ofstream outFile(outputFile);
+    if (!outFile.is_open()) {
+        std::cerr << "Error opening output file: " << outputFile << std::endl;
+        return;
+    }
+
     for (const auto& entry : fs::recursive_directory_iterator(directory)) {
         if (!entry.is_regular_file()) continue;
 
         std::string filePath = entry.path().string();
-        for (const auto& ext : extensions) {
-            if (filePath.size() >= ext.size() && filePath.substr(filePath.size() - ext.size()) == ext) {
-                auto matchingLines = findCurseWordsInFile(filePath, curseWords);
-                for (const auto& line : matchingLines) {
-                    outFile << line << std::endl;
-                }
-                break;
+        std::string fileExtension = entry.path().extension().string();
+
+        if (std::find(extensions.begin(), extensions.end(), fileExtension) != extensions.end()) {
+            auto matchingLines = findWordsInFile(filePath, searchWords);
+            for (const auto& line : matchingLines) {
+                outFile << line << std::endl;
             }
         }
     }
 }
 
-int main() {
-    std::string curseWordsFile = "words.txt";
-    std::string outputFile = "lines.txt";
-    std::string directory = ".";  // Directory to search in (current directory)
+int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << " <searchWordsFile> [<outputFile> <directory>]" << std::endl;
+        return 1;
+    }
+
+    std::string searchWordsFile = argv[1];
+    std::string outputFile = (argc > 2) ? argv[2] : "lines.txt";
+    std::string directory = (argc > 3) ? argv[3] : ".";
 
     // File extensions to search
     std::vector<std::string> sourceCodeExtensions = {
-        ".c", ".cpp", ".h", ".hpp", ".cc", ".cxx", ".hxx",  // C/C++
-        ".java", ".class",  // Java
-        ".py",  // Python
-        ".js", ".jsx",  // JavaScript
-        ".rb",  // Ruby
-        ".php",  // PHP
-        ".go",  // Go
-        ".rs",  // Rust
-        ".swift",  // Swift
-        ".ts", ".tsx"  // TypeScript
+        ".c", ".cpp", ".h", ".hpp", ".cc", ".cxx", ".hxx",
+        ".java", ".class",
+        ".py",
+        ".js", ".jsx",
+        ".rb",
+        ".php",
+        ".go",
+        ".rs",
+        ".swift",
+        ".ts", ".tsx"
     };
 
-    auto curseWords = loadCurseWords(curseWordsFile);
-    searchDirectory(directory, curseWords, outputFile, sourceCodeExtensions);
+    auto searchWords = loadSearchWords(searchWordsFile);
+    searchDirectory(directory, searchWords, outputFile, sourceCodeExtensions);
 
     std::cout << "Done! Results are in " << outputFile << std::endl;
 
