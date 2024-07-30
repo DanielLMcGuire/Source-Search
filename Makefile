@@ -1,13 +1,14 @@
 
-# Define variables
+# Compiler Options
 CXX = g++
 CXXFLAGS = -Wall -std=c++17
+
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 BIN_DIR = ./bin
-TARGET = sourcesearch.out
 
-# Source and object files
+# Repo Specific Stuff
+TARGET = sourcesearch.out
 SRC = $(SRC_DIR)/sourcesearch.cpp
 OBJ = $(OBJ_DIR)/sourcesearch.o
 
