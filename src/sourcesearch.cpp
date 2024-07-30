@@ -176,7 +176,7 @@ int main(int argc, char* argv[]) {
         "m", "mm",    // Objective-C, Objective-C++
         "kt", "kts",  // Kotlin
         "scala",
-        "sh", "bat".         // Shell scripts
+        "sh", "bat".  // Shell scripts
         "pl", "pm",   // Perl
         "lua",
         "r",          // R language
