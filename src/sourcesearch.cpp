@@ -85,7 +85,15 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
         std::string filePath = entry.path().string();
         std::string fileExtension = entry.path().extension().string();
 
-        if (std::find(extensions.begin(), extensions.end(), fileExtension) != extensions.end()) {
+        // Strip the period from the file extension
+        if (!fileExtension.empty() && fileExtension[0] == '.') {
+            fileExtension = fileExtension.substr(1);
+        }
+
+        // Ensure fileExtension is std::string
+        std::string searchExtension = fileExtension;
+
+        if (std::find(extensions.begin(), extensions.end(), searchExtension) != extensions.end()) {
             auto matchingLines = findWordsInFile(filePath, searchWords);
             for (const auto& line : matchingLines) {
                 outFile << line << std::endl;
@@ -93,6 +101,8 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
         }
     }
 }
+
+
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -106,16 +116,16 @@ int main(int argc, char* argv[]) {
 
     // File extensions to search
     std::vector<std::string> sourceCodeExtensions = {
-        ".c", ".cpp", ".h", ".hpp", ".cc", ".cxx", ".hxx",
-        ".java", ".class",
-        ".py",
-        ".js", ".jsx",
-        ".rb",
-        ".php",
-        ".go",
-        ".rs",
-        ".swift",
-        ".ts", ".tsx"
+        "c", "cpp", "h", "hpp", "cc", "cxx", "hxx",
+        "java", "class",
+        "py",
+        "js", "jsx",
+        "rb",
+        "php",
+        "go",
+        "rs",
+        "swift",
+        "ts", "tsx"
     };
 
     auto searchWords = loadSearchWords(searchWordsFile);
