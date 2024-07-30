@@ -5,7 +5,7 @@ CXXFLAGS = -Wall -std=c++17
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 BIN_DIR = ./bin
-TARGET = sourcesearch
+TARGET = sourcesearch.out
 
 # Source and object files
 SRC = $(SRC_DIR)/sourcesearch.cpp
