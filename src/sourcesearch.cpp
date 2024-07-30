@@ -164,7 +164,7 @@ int main(int argc, char* argv[]) {
     std::vector<std::string> sourceCodeExtensions = {
         "c", "cpp", "h", "hpp", "cc", "cxx", "hxx", // C and C++
         "java", "class", // Java
-        "py", "pyc";  // Python
+        "py", "pyc",  // Python
         "js", "jsx",  // JavaScript
         "ts", "tsx",  // tbh idk
         "rb",         // again, idk lol
@@ -176,7 +176,7 @@ int main(int argc, char* argv[]) {
         "m", "mm",    // Objective-C, Objective-C++
         "kt", "kts",  // Kotlin
         "scala",
-        "sh", "bat".  // Shell scripts
+        "sh", "bat",  // Shell scripts
         "pl", "pm",   // Perl
         "lua",
         "r",          // R language
