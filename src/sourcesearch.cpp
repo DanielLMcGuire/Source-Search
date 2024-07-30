@@ -16,9 +16,8 @@
 #include <set>
 #include <vector>
 #include <filesystem>
-#include <deque>
 #include <regex>
-#include <algorithm>
+#include <cstdlib>
 
 namespace fs = std::filesystem;
 
@@ -42,28 +41,36 @@ std::vector<std::string> findWordsInFile(const std::string& filePath, const std:
         return resultLines;
     }
 
-    std::string fileName = filePath.substr(filePath.find_last_of("/\\") + 1);
+    // Buffer for storing lines and their numbers
     std::deque<std::string> buffer;
+    std::vector<std::string> lines;
+    std::set<int> processedLines; // Track processed line numbers
     std::string line;
     int lineNumber = 0;
 
     while (std::getline(file, line)) {
         buffer.push_back(line);
+        lines.push_back(line);
         lineNumber++;
 
-        if (buffer.size() > 5) {
+        if (buffer.size() > 5) { // Buffer size for 2 lines before, 1 current, and 2 lines after
             buffer.pop_front();
         }
 
+        // Check if the current line contains any search words
         for (const auto& word : searchWords) {
-            if (line.find(word) != std::string::npos) {
-                // Print to console
-                std::cout << "Match found in file: " << fileName << " on line " << lineNumber << " with word: " << word << std::endl;
+            size_t pos = line.find(word);
+            if (pos != std::string::npos) {
+                if (processedLines.find(lineNumber) == processedLines.end()) {
+                    // Output to console
+                    std::cout << fs::path(filePath).filename().string() << ": Found the word '" << word << "' on line: " << lineNumber << std::endl;
 
-                // Output context lines
-                int startLine = std::max(0, lineNumber - static_cast<int>(buffer.size()));
-                for (int i = startLine; i < lineNumber; ++i) {
-                    resultLines.push_back(fileName + ": Line " + std::to_string(i + 1) + ": " + buffer[i - startLine] + " [Matched word: " + word + "]");
+                    // Output context lines
+                    int startLine = std::max(0, lineNumber - static_cast<int>(buffer.size()));
+                    for (int i = startLine; i < lineNumber; ++i) {
+                        resultLines.push_back(filePath + ": Line " + std::to_string(i + 1) + ": " + lines[i]);
+                    }
+                    processedLines.insert(lineNumber);
                 }
                 break;
             }
@@ -73,15 +80,13 @@ std::vector<std::string> findWordsInFile(const std::string& filePath, const std:
     return resultLines;
 }
 
-
-
 // Function to generate a new output file name with an incremented suffix
 std::string getNewFileName(const std::string& baseFileName, int index) {
     std::string::size_type pos = baseFileName.find_last_of('.');
     std::string baseName = baseFileName.substr(0, pos);
     std::string extension = (pos != std::string::npos) ? baseFileName.substr(pos + 1) : "";
 
-    std::string newFileName = baseName + std::to_string(index);
+    std::string newFileName = baseName + "_" + std::to_string(index);
     if (!extension.empty()) {
         newFileName += "." + extension;
     } else {
@@ -108,7 +113,6 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
             std::cerr << "Error opening output file: " << newFileName << std::endl;
             exit(1);
         }
-        std::cout << "Created new file: " << newFileName << std::endl; // Log new file creation
         currentLineCount = 0;
         fileIndex++;
     };
@@ -146,9 +150,6 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
     std::cout << "Done! Results are in files starting with " << outputFile << std::endl;
 }
 
-
-
-
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         std::cerr << "Usage: " << argv[0] << " <searchWordsFile> [<outputFile> <directory>]" << std::endl;
@@ -175,8 +176,6 @@ int main(int argc, char* argv[]) {
 
     auto searchWords = loadSearchWords(searchWordsFile);
     searchDirectory(directory, searchWords, outputFile, sourceCodeExtensions);
-
-    std::cout << "Done! Results are in " << outputFile << std::endl;
 
     return 0;
 }
