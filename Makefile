@@ -1,4 +1,3 @@
-
 # Compiler Options
 CXX = g++
 CXXFLAGS = -Wall -std=c++23
@@ -8,16 +7,35 @@ OBJ_DIR = ./obj
 BIN_DIR = ./bin
 
 # Repo Specific Stuff
-TARGET = sourcesearch.out
+TARGET_LINUX = sourcesearch.out
+TARGET_WIN = sourcesearch.exe
 SRC = $(SRC_DIR)/sourcesearch.cpp
 OBJ = $(OBJ_DIR)/sourcesearch.o
 
-# Rules
-all: $(BIN_DIR)/$(TARGET)
+# Detect platform
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+    TARGET := $(TARGET_LINUX)
+else
+    TARGET := $(TARGET_WIN)
+endif
 
-$(BIN_DIR)/$(TARGET): $(OBJ)
+# Default target
+all: linux
+
+# Linux build
+linux: $(BIN_DIR)/$(TARGET_LINUX)
+
+$(BIN_DIR)/$(TARGET_LINUX): $(OBJ)
 	mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/$(TARGET) $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/$(TARGET_LINUX) $(OBJ)
+
+# Windows build
+win: $(BIN_DIR)/$(TARGET_WIN)
+
+$(BIN_DIR)/$(TARGET_WIN): $(OBJ)
+	mkdir -p $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/$(TARGET_WIN) $(OBJ)
 
 $(OBJ): $(SRC)
 	mkdir -p $(OBJ_DIR)
@@ -26,4 +44,4 @@ $(OBJ): $(SRC)
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
-.PHONY: all clean
+.PHONY: all linux win clean
