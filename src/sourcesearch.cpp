@@ -3,7 +3,7 @@
  * Program: Source Search (C++)
  *
  * Writer: (Originally) Andrew M.
- * Porter: Daniel McGuire (from Python) (Original is at ../py)
+ * Porter: Daniel McGuire (from Python)
  *
  * Purpose: Search Source Code for Words and include context.
  */
