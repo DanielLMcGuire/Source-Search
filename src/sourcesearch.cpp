@@ -1,13 +1,12 @@
 /*
-file: sourcesearch.cpp
-Program: Source Search (C++)
-
-Writer: (Originally) Andrew M.
-
-Porter: Daniel McGuire (from Python) (Original is at ../py)
-
-Purpose: Search Source Code for Words.
-*/
+ * file: sourcesearch.cpp
+ * Program: Source Search (C++)
+ *
+ * Writer: (Originally) Andrew M.
+ * Porter: Daniel McGuire (from Python) (Original is at ../py)
+ *
+ * Purpose: Search Source Code for Words and include context.
+ */
 
 // Includes
 #include <iostream>
@@ -17,6 +16,7 @@ Purpose: Search Source Code for Words.
 #include <set>
 #include <vector>
 #include <filesystem>
+#include <deque>
 
 namespace fs = std::filesystem;
 
@@ -31,22 +31,44 @@ std::set<std::string> loadSearchWords(const std::string& filePath) {
     return searchWords;
 }
 
-// Find words in a file and return matching lines
+// Find words in a file and return matching lines with context
 std::vector<std::string> findWordsInFile(const std::string& filePath, const std::set<std::string>& searchWords) {
-    std::vector<std::string> matchingLines;
+    std::vector<std::string> resultLines;
     std::ifstream file(filePath);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file: " << filePath << std::endl;
+        return resultLines;
+    }
+
+    // Buffer for storing lines and their numbers
+    std::deque<std::string> buffer;
+    std::vector<std::string> lines;
     std::string line;
+    int lineNumber = 0;
+
     while (std::getline(file, line)) {
-        std::istringstream iss(line);
-        std::string word;
-        while (iss >> word) {
-            if (searchWords.find(word) != searchWords.end()) {
-                matchingLines.push_back(filePath + ": " + line);
+        buffer.push_back(line);
+        lines.push_back(line);
+        lineNumber++;
+
+        if (buffer.size() > 5) { // Buffer size for 2 lines before, 1 current, and 2 lines after
+            buffer.pop_front();
+        }
+
+        // Check if the current line contains any search words
+        for (const auto& word : searchWords) {
+            if (line.find(word) != std::string::npos) {
+                // Output context lines
+                int startLine = std::max(0, lineNumber - static_cast<int>(buffer.size()));
+                for (int i = startLine; i < lineNumber; ++i) {
+                    resultLines.push_back(filePath + ": Line " + std::to_string(i + 1) + ": " + lines[i]);
+                }
                 break;
             }
         }
     }
-    return matchingLines;
+
+    return resultLines;
 }
 
 // Search a directory for files containing specified words and write results to an output file
