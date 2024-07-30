@@ -42,13 +42,11 @@ std::vector<std::string> findWordsInFile(const std::string& filePath, const std:
 
     // Buffer for storing lines and their numbers
     std::deque<std::string> buffer;
-    std::vector<std::string> lines;
     std::string line;
     int lineNumber = 0;
 
     while (std::getline(file, line)) {
         buffer.push_back(line);
-        lines.push_back(line);
         lineNumber++;
 
         if (buffer.size() > 5) { // Buffer size for 2 lines before, 1 current, and 2 lines after
@@ -61,7 +59,7 @@ std::vector<std::string> findWordsInFile(const std::string& filePath, const std:
                 // Output context lines
                 int startLine = std::max(0, lineNumber - static_cast<int>(buffer.size()));
                 for (int i = startLine; i < lineNumber; ++i) {
-                    resultLines.push_back(filePath + ": Line " + std::to_string(i + 1) + ": " + lines[i]);
+                    resultLines.push_back(filePath + ": Line " + std::to_string(i + 1) + ": " + buffer[i - startLine]);
                 }
                 break;
             }
@@ -70,6 +68,7 @@ std::vector<std::string> findWordsInFile(const std::string& filePath, const std:
 
     return resultLines;
 }
+
 
 // Search a directory for files containing specified words and write results to an output file
 void searchDirectory(const std::string& directory, const std::set<std::string>& searchWords, const std::string& outputFile, const std::vector<std::string>& extensions) {
