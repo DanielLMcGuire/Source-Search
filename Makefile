@@ -15,6 +15,7 @@ OBJ = $(OBJ_DIR)/sourcesearch.o
 all: $(BIN_DIR)/$(TARGET)
 
 $(BIN_DIR)/$(TARGET): $(OBJ)
+	mkdir -p $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/$(TARGET) $(OBJ)
 
 $(OBJ): $(SRC)
