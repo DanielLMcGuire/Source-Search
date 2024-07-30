@@ -18,9 +18,27 @@
 #include <filesystem>
 #include <regex>
 #include <cstdlib>
+#include <cstring>
+// DMC Include
 #include "extensions.hpp"
+#include "OSInfo.hpp"
 
 namespace fs = std::filesystem;
+
+void printLogo() {
+    const std::string program = "Source Search";
+    const std::string vernum = "1.2.5.0.2431-dev";
+    std::string osName = getOSName();
+    std::string logo = program + " " + vernum;
+    std::cout << logo << std::endl;
+    std::cout << "Running on" << " " << osName << std::endl;
+    std::cout << std::endl;
+}
+
+void printHelp(const std::string& programName) {
+    printLogo();
+    std::cout << "Usage: " << programName << " <searchWordsFile> [<outputFile> <directory>]" << std::endl;
+}
 
 // Load words from a file
 std::set<std::string> loadSearchWords(const std::string& filePath) {
@@ -136,6 +154,7 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
             auto matchingLines = findWordsInFile(filePath, searchWords);
             for (const auto& line : matchingLines) {
                 if (currentLineCount >= maxLinesPerFile) {
+                    std::cout << "Switching to new file." << std::endl;
                     openNewFile();
                 }
                 outFile << line << std::endl;
@@ -147,16 +166,22 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
     if (outFile.is_open()) {
         outFile.close();
     }
-
+    printLogo();
     std::cout << "Done! Results are in files starting with " << outputFile << std::endl;
 }
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <searchWordsFile> [<outputFile> <directory>]" << std::endl;
-        return 1;
+    std::cout << "No arguments provided." << std::endl;
+    printHelp(argv[0]);
+    return 1;
+    }
+    if (strcmp(argv[1], "--help") == 0) {
+         printHelp(argv[0]);
+        return 0;
     }
 
+    printLogo();
     std::string searchWordsFile = argv[1];
     std::string outputFile = (argc > 2) ? argv[2] : "lines.txt";
     std::string directory = (argc > 3) ? argv[3] : ".";
