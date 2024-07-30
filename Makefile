@@ -24,6 +24,6 @@ $(OBJ): $(SRC)
 	$(CXX) $(CXXFLAGS) -c $(SRC) -o $(OBJ)
 
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR)/$(TARGET)
+	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
 .PHONY: all clean
