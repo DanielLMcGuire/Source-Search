@@ -1,6 +1,6 @@
 # Maintainer: Daniel McGuire <danielmcguire23@icloud.com>
 pkgname=sourcesearch
-pkgver=1.0.0
+pkgver=1.2.5
 pkgrel=1
 pkgdesc="Searches Source Code for matching words."
 arch=('any')
