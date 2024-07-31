@@ -21,23 +21,39 @@
 #include <cstring>
 // DMC Include
 #include "extensions.hpp"
-#include "OSInfo.hpp"
+#include "version.hpp"
 
 namespace fs = std::filesystem;
 
 void printLogo() {
     const std::string program = "Source Search";
-    const std::string vernum = "1.2.5.0.2431-dev";
-    std::string osName = getOSName();
     std::string logo = program + " " + vernum;
     std::cout << logo << std::endl;
-    std::cout << "Running on" << " " << osName << std::endl;
     std::cout << std::endl;
 }
 
 void printHelp(const std::string& programName) {
     printLogo();
     std::cout << "Usage: " << programName << " <searchWordsFile> [<outputFile> <directory>]" << std::endl;
+}
+
+int parseArgs(int argc, char* argv[]) {
+    if (argc > 1) {
+        if (strcmp(argv[1], "--version") == 0) {
+            std::cout << vernum << std::endl;
+            return 0;
+        } else if (strcmp(argv[1], "--help") == 0) {
+            printHelp(argv[0]);
+            return 0;
+        } else {
+            std::cout << "Unknown option: " << argv[1] << std::endl;
+            printHelp(argv[0]);
+            return 1;
+        }
+    } else {
+        printHelp(argv[0]);
+        return 0;
+    }
 }
 
 // Load words from a file
@@ -176,11 +192,7 @@ int main(int argc, char* argv[]) {
     printHelp(argv[0]);
     return 1;
     }
-    if (strcmp(argv[1], "--help") == 0) {
-         printHelp(argv[0]);
-        return 0;
-    }
-
+    parseArgs(argc, argv);
     printLogo();
     std::string searchWordsFile = argv[1];
     std::string outputFile = (argc > 2) ? argv[2] : "lines.txt";

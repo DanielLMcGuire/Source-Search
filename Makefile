@@ -9,8 +9,8 @@ BIN_DIR = ./bin
 # Repo Specific Stuff
 TARGET_LINUX = sourcesearch.out
 TARGET_WIN = sourcesearch.exe
-SRCS = $(SRC_DIR)/sourcesearch.cpp $(SRC_DIR)/OSInfo.cpp
-OBJS = $(OBJ_DIR)/sourcesearch.o $(OBJ_DIR)/OSInfo.o
+SRCS = $(SRC_DIR)/sourcesearch.cpp 
+OBJS = $(OBJ_DIR)/sourcesearch.o 
 
 # Detect platform
 UNAME_S := $(shell uname -s)
