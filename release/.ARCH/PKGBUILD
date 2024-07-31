@@ -12,7 +12,7 @@ md5sums=('SKIP')  # Bypass checksum verification for testing
 
 build() {
   cd "$srcdir/Source-Scanner-${pkgver}"
-  make
+  make linux
 }
 
 package() {
