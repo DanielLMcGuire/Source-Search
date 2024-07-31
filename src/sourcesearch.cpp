@@ -40,26 +40,56 @@ void printHelp(const std::string& programName) {
     std::cout << "  --help         Show this help message\n";
 }
 
+// Define an enum for the command-line options
+enum Option {
+    NONE,
+    VERSION,
+    HELP,
+    UNKNOWN
+};
+
+// Function to convert string arguments to enum values
+Option getOption(const char* arg) {
+    if (strcmp(arg, "--version") == 0) {
+        return VERSION;
+    } else if (strcmp(arg, "--help") == 0) {
+        return HELP;
+    } else {
+        return UNKNOWN;
+    }
+}
+
 int parseArgs(int argc, char* argv[]) {
     if (argc > 1) {
-        if (strcmp(argv[1], "--version") == 0) {
-            std::cout << vernum << std::endl;
-            return 1; // Special case handled
-        } else if (strcmp(argv[1], "--help") == 0) {
-            printHelp(argv[0]);
-            return 1; // Special case handled
-        } else {
-            std::cout << "Unknown option: " << argv[1] << std::endl;
-            printHelp(argv[0]);
-            return 1; // Error code for unknown option
+        // Get the option from the command-line argument
+        Option opt = getOption(argv[1]);
+
+        // Switch on the option
+        switch (opt) {
+            case VERSION:
+                std::cout << vernum << std::endl;
+                return 1; // Special case handled
+
+            case HELP:
+                printHelp(argv[0]);
+                return 1; // Special case handled
+
+            case UNKNOWN:
+                std::cout << "Unknown option: " << argv[1] << std::endl;
+                printHelp(argv[0]);
+                return 1; // Error code for unknown option
+
+            default:
+                // No valid options, show help
+                printHelp(argv[0]);
+                return 1; // Indicate that no valid arguments were provided
         }
     } else {
         // No arguments provided, show help
         printHelp(argv[0]);
         return 1; // Indicate that no valid arguments were provided
     }
-}
-// Load words from a file
+}// Load words from a file
 std::set<std::string> loadSearchWords(const std::string& filePath) {
     std::set<std::string> searchWords;
     std::ifstream file(filePath);
