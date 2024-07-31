@@ -35,6 +35,9 @@ void printLogo() {
 void printHelp(const std::string& programName) {
     printLogo();
     std::cout << "Usage: " << programName << " <searchWordsFile> [<outputFile> <directory>]" << std::endl;
+    std::cout << "\nOptions:\n";
+    std::cout << "  --version      Show the version of the program\n";
+    std::cout << "  --help         Show this help message\n";
 }
 
 int parseArgs(int argc, char* argv[]) {
@@ -51,10 +54,11 @@ int parseArgs(int argc, char* argv[]) {
             return 1;
         }
     } else {
+        // No arguments provided, show help
         printHelp(argv[0]);
         return 0;
     }
-}
+
 
 // Load words from a file
 std::set<std::string> loadSearchWords(const std::string& filePath) {
