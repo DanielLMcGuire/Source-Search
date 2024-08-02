@@ -4,7 +4,7 @@
  *
  * Writer: Daniel McGuire
  *
- * Purpose: Just to keep the versionstring seperate.
+ * Purpose: Just to keep the version string seperate.
  */
 #ifndef SSVERSION_H
 #define SSVERSION_H
