@@ -31,6 +31,8 @@
 *.out
 *.app
 
-
+.vscode/
+.history/
+obj/
 bin/
 releasearchive/
