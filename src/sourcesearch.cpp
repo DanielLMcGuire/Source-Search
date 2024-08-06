@@ -7,8 +7,6 @@
  *
  * Purpose: Search Source Code for Words and include context.
  */
-
-// Includes
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -20,10 +18,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <deque>
-// DMC Include
 #include "extensions.hpp"
 #include "version.hpp"
-
 namespace fs = std::filesystem;
 
 void printLogo() {
@@ -32,7 +28,6 @@ void printLogo() {
     std::cout << logo << std::endl;
     std::cout << std::endl;
 }
-
 void printHelp(const std::string& programName) {
     printLogo();
     std::cout << "Usage: " << programName << " <searchWordsFile> [<outputFile> <directory>]" << std::endl;
@@ -40,7 +35,6 @@ void printHelp(const std::string& programName) {
     std::cout << "  --version      Show the version of the program\n";
     std::cout << "  --help         Show this help message\n";
 }
-
 // Define an enum for the command-line options
 enum Option {
     NONE,
@@ -48,7 +42,6 @@ enum Option {
     HELP,
     UNKNOWN
 };
-
 // Function to convert string arguments to enum values
 Option getOption(const char* arg) {
     if (strcmp(arg, "--version") == 0) {
@@ -59,7 +52,6 @@ Option getOption(const char* arg) {
         return UNKNOWN;
     }
 }
-
 int parseArgs(int argc, char* argv[]) {
     if (argc > 1) {
         // Get the option from the command-line argument
@@ -100,7 +92,6 @@ std::set<std::string> loadSearchWords(const std::string& filePath) {
     }
     return searchWords;
 }
-
 // Find words in a file and return matching lines with context
 std::vector<std::string> findWordsInFile(const std::string& filePath, const std::set<std::string>& searchWords) {
     std::vector<std::string> resultLines;
@@ -151,8 +142,6 @@ std::vector<std::string> findWordsInFile(const std::string& filePath, const std:
 
     return resultLines;
 }
-
-
 // Function to generate a new output file name with an incremented suffix
 std::string getNewFileName(const std::string& baseFileName, int index) {
     std::string::size_type pos = baseFileName.find_last_of('.');
@@ -168,7 +157,6 @@ std::string getNewFileName(const std::string& baseFileName, int index) {
 
     return newFileName;
 }
-
 // Search a directory for files containing specified words and write results to an output file
 void searchDirectory(const std::string& directory, const std::set<std::string>& searchWords, const std::string& outputFile, const std::vector<std::string>& extensions) {
     int maxLinesPerFile = 950;
@@ -223,7 +211,6 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
     printLogo();
     std::cout << "Done! Results are in files starting with " << outputFile << std::endl;
 }
-
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         std::cout << "No arguments provided." << std::endl;
