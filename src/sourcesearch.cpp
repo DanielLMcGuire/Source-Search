@@ -19,6 +19,7 @@
 #include <regex>
 #include <cstdlib>
 #include <cstring>
+#include <deque>
 // DMC Include
 #include "extensions.hpp"
 #include "version.hpp"
