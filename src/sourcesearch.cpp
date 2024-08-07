@@ -25,7 +25,7 @@ namespace fs = std::filesystem;
 void printLogo() {
     const std::string program = "Source Search";
     std::string logo = program + " " + vernum;
-    std::cout << logo << std::endl;
+    std::cout << logo << '\n';
     std::cout << std::endl;
 }
 void printHelp(const std::string& programName) {
