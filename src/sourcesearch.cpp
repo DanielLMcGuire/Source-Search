@@ -36,6 +36,7 @@ void printHelp(const std::string& programName) {
     std::cout << "  --help         Show this help message\n";
 }
 // Define an enum for the command-line options
+// TODO: make this not be this.
 enum Option {
     NONE,
     VERSION,
@@ -83,6 +84,7 @@ int parseArgs(int argc, char* argv[]) {
         return 1; // Indicate that no valid arguments were provided
     }
 }// Load words from a file
+//TODO: multi-threading
 std::set<std::string> loadSearchWords(const std::string& filePath) {
     std::set<std::string> searchWords;
     std::ifstream file(filePath);
