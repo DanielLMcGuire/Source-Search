@@ -16,7 +16,7 @@ Download the latest release from the [Releases](https://github.com/DanielLMcGuir
 ## Usage
 
 ```bash
-./source-search <searchWordsFile> [<outputFile> <directory>]
+./sourcesearch <searchWordsFile> [<outputFile> <directory>]
 ```
 
 ### Arguments
@@ -35,7 +35,7 @@ Download the latest release from the [Releases](https://github.com/DanielLMcGuir
 To search for words listed in `words.txt` within the current directory and save the output to `results.txt`:
 
 ```bash
-./source-search words.txt results.txt .
+./sourcesearch words.txt results.txt .
 ```
 
 ## Contributing
