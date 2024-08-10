@@ -1,7 +1,7 @@
 # Source Search 
 Source Search is a C++ application designed to scan source code files for specified words, providing contextual lines around each match. Originally written in Python by a friend and ported to C++ by me, this tool is useful for developers and analysts looking to quickly identify specific terms within large codebases.
 
-### [Download](https://daniellmcguire.github.io/Source-Search-Download/latest.html)
+### [Download](https://daniellmcguire.github.io/Source-Search-Download/)
 
 ## Features
 
@@ -9,10 +9,6 @@ Source Search is a C++ application designed to scan source code files for specif
 - **Contextual Output**: Includes lines around each match to provide context.
 - **File Type Filtering**: Search within specific file extensions. [Available File Extensions](https://github.com/DanielLMcGuire/Source-Scanner/blob/main/src/extensions.hpp) (add more by building from source)
 - **Customizable Output**: Results can be written to a specified file or split into multiple files if the output exceeds a line limit.
-
-## Installation
-
-Download the latest release from the [Releases](https://github.com/DanielLMcGuire/Source-Scanner/releases) page on GitHub. Follow the Install Instuctions.
 
 ## Usage
 
