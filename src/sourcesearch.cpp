@@ -158,8 +158,9 @@ std::string getNewFileName(const std::string& baseFileName, int index) {
     return newFileName;
 }
 // Search a directory for files containing specified words and write results to an output file
-void searchDirectory(const std::string& directory, const std::set<std::string>& searchWords, const std::string& outputFile, const std::vector<std::string>& extensions) {
-    int maxLinesPerFile = 950;
+void searchDirectory(const std::string& directory, const std::set<std::string>& searchWords,
+                     const std::string& outputFile, const std::vector<std::string>& extensions) {
+    const int maxLinesPerFile = 950;
     int fileIndex = 1;
     int currentLineCount = 0;
     std::ofstream outFile;
@@ -172,7 +173,7 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
         outFile.open(newFileName);
         if (!outFile.is_open()) {
             std::cerr << "Error opening output file: " << newFileName << std::endl;
-            exit(1);
+            exit(1); // Or handle the error more gracefully
         }
         currentLineCount = 0;
         fileIndex++;
@@ -190,9 +191,7 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
             fileExtension = fileExtension.substr(1);
         }
 
-        std::string searchExtension = fileExtension;
-
-        if (std::find(extensions.begin(), extensions.end(), searchExtension) != extensions.end()) {
+        if (std::find(extensions.begin(), extensions.end(), fileExtension) != extensions.end()) {
             auto matchingLines = findWordsInFile(filePath, searchWords);
             for (const auto& line : matchingLines) {
                 if (currentLineCount >= maxLinesPerFile) {
@@ -211,6 +210,7 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
     printLogo();
     std::cout << "Done! Results are in files starting with " << outputFile << std::endl;
 }
+
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         std::cerr << "No arguments provided." << std::endl;

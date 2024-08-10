@@ -11,6 +11,6 @@
 
 #include <string>
 
-const std::string vernum = "1.2.5.0.2431-dev";
+const std::string vernum = "1.3.0.1.2432-dev";
 
 #endif // SSVERSION_H

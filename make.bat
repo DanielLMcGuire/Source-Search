@@ -35,7 +35,10 @@ if "%1"=="full" (
 :: Compile and link sources to create the final executable
 echo Building Project...
 %CXX% %CXXFLAGS% /Fe"%BIN_DIR%\%TARGET%" %SRC_DIR%\%SRC_FILES%
-
+if "%1"=="run" (
+    bin\sourcesearch --version
+    exit
+)
 :: Display completion message
 echo Build complete. Binarys are located in %BIN_DIR%.
 echo This does not indicate success, as this message will always display.
