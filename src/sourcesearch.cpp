@@ -26,6 +26,8 @@ void printLogo() {
     std::cout << logo << '\n';
     std::cout << std::endl;
 }
+
+// Function to print the program usage and help message
 void printHelp(const std::string& programName) {
     printLogo();
     std::cout << "Usage: " << programName << " <searchWordsFile> [<outputFile> <directory>]" << std::endl;
@@ -33,15 +35,16 @@ void printHelp(const std::string& programName) {
     std::cout << "  --version      Show the version of the program\n";
     std::cout << "  --help         Show this help message\n";
 }
-// Define an enum for the command-line options
-// TODO: make this not be this.
+
+// Enum to represent different command line options
 enum Option {
     NONE,
     VERSION,
     HELP,
     UNKNOWN
 };
-// Function to convert string arguments to enum values
+
+// Function to parse command line options
 Option getOption(const char* arg) {
     if (strcmp(arg, "--version") == 0) {
         return VERSION;
@@ -51,38 +54,32 @@ Option getOption(const char* arg) {
         return UNKNOWN;
     }
 }
+
+// Function to parse command line arguments
 int parseArgs(int argc, char* argv[]) {
     if (argc > 1) {
-        // Get the option from the command-line argument
         Option opt = getOption(argv[1]);
-
-        // Switch on the option
         switch (opt) {
             case VERSION:
                 std::cout << vernum << std::endl;
-                return 1; // Special case handled
-
+                return 1;
             case HELP:
                 printHelp(argv[0]);
-                return 1; // Special case handled
-
+                return 1;
             case UNKNOWN:
                 std::cout << "Unknown option: " << argv[1] << std::endl;
                 printHelp(argv[0]);
-                return 1; // Error code for unknown option
-
+                return 1;
             default:
-                // No valid options, show help
-                printHelp(argv[0]);
-                return 1; // Indicate that no valid arguments were provided
+                return 0;
         }
     } else {
-        // No arguments provided, show help
         printHelp(argv[0]);
-        return 1; // Indicate that no valid arguments were provided
+        return 1;
     }
-}// Load words from a file
-//TODO: multi-threading
+}
+
+// Function to load search words from a file
 std::set<std::string> loadSearchWords(const std::string& filePath) {
     std::set<std::string> searchWords;
     std::ifstream file(filePath);
@@ -92,7 +89,8 @@ std::set<std::string> loadSearchWords(const std::string& filePath) {
     }
     return searchWords;
 }
-// Find words in a file and return matching lines with context
+
+// Function to find search words in a file and return matching lines with context
 std::vector<std::string> findWordsInFile(const std::string& filePath, const std::set<std::string>& searchWords) {
     std::vector<std::string> resultLines;
     std::ifstream file(filePath);
@@ -101,32 +99,29 @@ std::vector<std::string> findWordsInFile(const std::string& filePath, const std:
         return resultLines;
     }
 
-    // Buffer for storing lines and their numbers
+    // Buffer to store lines for context
     std::deque<std::string> buffer;
     std::vector<std::string> lines;
-    std::set<int> processedLines; // Track processed line numbers
+    std::set<int> processedLines;
     std::string line;
     int lineNumber = 0;
-    const int contextSize = 2; // Number of lines before and after
+    const int contextSize = 2;
 
     while (std::getline(file, line)) {
         buffer.push_back(line);
         lines.push_back(line);
         lineNumber++;
 
-        if (buffer.size() > contextSize * 2 + 1) { // Buffer size for context lines
+        if (buffer.size() > contextSize * 2 + 1) {
             buffer.pop_front();
         }
 
-        // Check if the current line contains any search words
         for (const auto& word : searchWords) {
             size_t pos = line.find(word);
             if (pos != std::string::npos) {
                 if (processedLines.find(lineNumber) == processedLines.end()) {
-                    // Output to console
                     std::cout << fs::path(filePath).filename().string() << ": Found the word '" << word << "' on line: " << lineNumber << std::endl;
 
-                    // Output context lines
                     int startLine = std::max(0, lineNumber - contextSize - 1);
                     int endLine = std::min(static_cast<int>(lines.size()) - 1, lineNumber + contextSize - 1);
                     
@@ -142,7 +137,8 @@ std::vector<std::string> findWordsInFile(const std::string& filePath, const std:
 
     return resultLines;
 }
-// Function to generate a new output file name with an incremented suffix
+
+// Function to generate a new file name with an index suffix
 std::string getNewFileName(const std::string& baseFileName, int index) {
     std::string::size_type pos = baseFileName.find_last_of('.');
     std::string baseName = baseFileName.substr(0, pos);
@@ -157,7 +153,8 @@ std::string getNewFileName(const std::string& baseFileName, int index) {
 
     return newFileName;
 }
-// Search a directory for files containing specified words and write results to an output file
+
+// Function to search for search words in a directory and its subdirectories
 void searchDirectory(const std::string& directory, const std::set<std::string>& searchWords,
                      const std::string& outputFile, const std::vector<std::string>& extensions) {
     const int maxLinesPerFile = 950;
@@ -173,13 +170,13 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
         outFile.open(newFileName);
         if (!outFile.is_open()) {
             std::cerr << "Error opening output file: " << newFileName << std::endl;
-            exit(1); // Or handle the error more gracefully
+            exit(1);
         }
         currentLineCount = 0;
         fileIndex++;
     };
 
-    openNewFile(); // Open the first output file
+    openNewFile();
 
     for (const auto& entry : fs::recursive_directory_iterator(directory)) {
         if (!entry.is_regular_file()) continue;
@@ -211,6 +208,7 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
     std::cout << "Done! Results are in files starting with " << outputFile << std::endl;
 }
 
+// Main function to handle command line arguments and execute the program
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         std::cerr << "No arguments provided." << std::endl;
@@ -218,14 +216,11 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Parse arguments and handle special cases
     int result = parseArgs(argc, argv);
     if (result != 0) {
-        // If parseArgs returns a non-zero value, it indicates a special case
         return result;
     }
 
-    // If not an error, proceed with normal execution
     printLogo();
     std::string searchWordsFile = argv[1];
     std::string outputFile = (argc > 2) ? argv[2] : "lines.txt";
@@ -236,4 +231,3 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
-
