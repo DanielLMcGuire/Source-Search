@@ -1,6 +1,6 @@
 /*
  * file: sourcesearch.cpp
- * Program: Source Search (C++)
+ * Program: Source Search (C++) (C# port coming soon!)
  *
  * Writer: (Originally) Andrew M.
  * Porter: Daniel McGuire (from Python)
@@ -213,7 +213,7 @@ void searchDirectory(const std::string& directory, const std::set<std::string>& 
 }
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        std::cout << "No arguments provided." << std::endl;
+        std::cerr << "No arguments provided." << std::endl;
         printHelp(argv[0]);
         return 1;
     }
