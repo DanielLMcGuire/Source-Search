@@ -1,8 +1,0 @@
-Package: sourcesearch
-Version: 1.2.5
-Section: base
-Priority: optional
-Architecture: any
-Depends: libc6
-Maintainer: Daniel McGuire <danielmcguire23@icloud.com>
-Description: Searches Source Code for matching words.

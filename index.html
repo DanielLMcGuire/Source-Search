@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <style>
+        body {
+            background-color: #121212; /* Dark background color */
+            color: white; /* White text color */
+            font-family: Arial, sans-serif; /* Optional: Set a clean font */
+            text-align: center; /* Optional: Center the text */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+            height: 100vh; /* Ensure full viewport height */
+            display: flex; /* Center content vertically and horizontally */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('versions.json')
+                .then(response => response.json())
+                .then(versions => {
+                    if (Array.isArray(versions) && versions.length > 0) {
+                        // Assume the latest version is the last in the list
+                        const latestVersion = versions[versions.length - 1];
+                        window.location.href = latestVersion;
+                    } else {
+                        document.body.innerHTML = '<p>No versions available.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching versions:', error);
+                    document.body.innerHTML = '<p>Unable to redirect. Please report this issue.</p>';
+                });
+        });
+    </script>
+</head>
+<body>
+    <p>Redirecting to the latest version...</p>
+</body>
+</html>

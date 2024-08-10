@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=sourcesearch
-Comment=Scans Source Code for matching words
-Exec=sourcesearch
-Terminal=true
-Icon=sourcesearch
-Type=Application
-Categories=Utility;
