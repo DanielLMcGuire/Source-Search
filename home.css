@@ -72,3 +72,41 @@ body {
 #release-bar button:hover {
     background-color: #5a9bd4;
 }
+/* Add these styles at the end of your CSS file */
+body, html {
+    overflow-x: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    padding: 50px;
+    width: 90vw;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+/* Adjusted styles for the footer */
+#footer {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+    text-align: center;
+    padding: 10px; /* Reduced padding */
+    width: 100%;
+    border-radius: 5px; /* Reduced border-radius */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Reduced box-shadow size */
+    margin-top: auto;
+}
+
+#footer a {
+    color: #76B9ED;
+    text-decoration: none;
+}
+
+#footer a:hover {
+    color: #5a9bd4;
+    text-decoration: underline;
+}
