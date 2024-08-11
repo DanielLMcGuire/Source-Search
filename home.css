@@ -44,12 +44,14 @@ body {
     border-radius: 10px;
     text-align: left;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-color: #1e1e1e;
 }
 
 #release-bar {
     list-style: none;
     padding: 0;
     margin: 0;
+    
 }
 
 #release-bar li {
