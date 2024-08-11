@@ -2,16 +2,12 @@
     "name": "Source Search",
     "description": "Scans source code for words",
     "latest": {
-        "version": "Stable",
+        "version": "1.2.5.0.2431",
         "url": "latest"
     },
     "previous": [
         {
-            "version": "(Latest) 1.2.5.0.2431",
-            "url": "2431"
-        },
-        {
-            "version": "(First) dev1.0.0.0.2430",
+            "version": "(BETA) 1.0.0.0.2430",
             "url": "2430"
         }
     ]
