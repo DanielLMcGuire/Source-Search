@@ -20,27 +20,22 @@
         <div id="release-notes" class="release-notes-container"></div>
     </div>
 
-    <div id="countdownPopup" class="popup">
-        <div class="popup-content">
-            <span class="close" onclick="closeCountdownPopup()">&times;</span>
-            <h2>Starting download in <span id="countdown">10</span> seconds...</h2>
-        </div>
-    </div>
-    
+    <!-- Linux Download Popup -->
     <div id="linuxPopup" class="popup">
         <div class="popup-content">
             <span class="close" onclick="closeLinuxPopup()">&times;</span>
             <h2>Select a version:</h2>
-            <a href="../dl404.html" class="version-link">Debian / Ubuntu (deb)</a>
-            <a href="../dl404.html" class="version-link">Arch / Manjaro (pkg.tar.zst)</a>
-            <a href="../dl404.html" class="version-link">Other (AppImage)</a>
+            <a href="#" class="version-link" onclick="startLinuxDownload('deb')">Debian / Ubuntu (deb)</a>
+            <a href="#" class="version-link" onclick="startLinuxDownload('pkg')">Arch / Manjaro (pkg.tar.zst)</a>
+            <a href="#" class="version-link" onclick="startLinuxDownload('appimage')">Other (AppImage)</a>
         </div>
     </div>
 
-    <div id="comingSoonPopup" class="popup">
+    <!-- Countdown Popup -->
+    <div id="countdownPopup" class="popup">
         <div class="popup-content">
-            <span class="close" onclick="closeComingSoonPopup()">&times;</span>
-            <h2>Coming Soon!</h2>
+            <span class="close" onclick="closeCountdownPopup()">&times;</span>
+            <h2>Starting download in <span id="countdown">10</span> seconds...</h2>
         </div>
     </div>
 
