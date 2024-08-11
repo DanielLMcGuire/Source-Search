@@ -32,33 +32,34 @@
         <p>&copy; 2024 Daniel McGuire | <a href="https://github.com/DanielLMcGuire/Source-Search" target="_blank">GitHub</a></p>
     </footer>
     
-    <script>
+    <<script>
         // Fetch version info from webver.json
         fetch('webver.json')
             .then(response => response.json())
             .then(data => {
                 document.getElementById('software-name').textContent = data.name;
                 document.getElementById('software-description').textContent = data.description;
-
+    
                 const releaseBar = document.getElementById('release-bar');
                 const latestRelease = document.getElementById('latest-release');
-
+    
                 latestRelease.textContent = `Latest Release: ${data.latest.version}`;
                 latestRelease.onclick = () => {
-                    window.location.href = data.latest.url;
+                    window.open(data.latest.url, '_blank', 'width=800,height=600');
                 };
-
+    
                 data.previous.forEach(release => {
                     const li = document.createElement('li');
                     const button = document.createElement('button');
                     button.textContent = release.version;
                     button.onclick = () => {
-                        window.location.href = release.url;
+                        window.open(release.url, '_blank', 'width=800,height=600');
                     };
                     li.appendChild(button);
                     releaseBar.appendChild(li);
                 });
             });
     </script>
+    
 </body>
 </html>
