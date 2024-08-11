@@ -1,0 +1,18 @@
+{
+    "name": "Source Search",
+    "description": "Scans source code for words",
+    "latest": {
+        "version": "Stable",
+        "url": "latest.html"
+    },
+    "previous": [
+        {
+            "version": "(Latest) 1.2.5",
+            "url": "2431/"
+        },
+        {
+            "version": "(First) dev1.0.0",
+            "url": "2430/"
+        }
+    ]
+}

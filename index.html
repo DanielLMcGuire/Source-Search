@@ -3,42 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Source Search</title>
-    <style>
-        body {
-            background-color: #121212; /* Dark background color */
-            color: white; /* White text color */
-            font-family: Arial, sans-serif; /* Optional: Set a clean font */
-            text-align: center; /* Optional: Center the text */
-            margin: 0; /* Remove default margin */
-            padding: 0; /* Remove default padding */
-            height: 100vh; /* Ensure full viewport height */
-            display: flex; /* Center content vertically and horizontally */
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-        }
-    </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('versions.json')
-                .then(response => response.json())
-                .then(versions => {
-                    if (Array.isArray(versions) && versions.length > 0) {
-                        // Assume the latest version is the last in the list
-                        const latestVersion = versions[versions.length - 1];
-                        window.location.href = latestVersion;
-                    } else {
-                        document.body.innerHTML = '<p>No versions available.</p>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching versions:', error);
-                    document.body.innerHTML = '<p>Unable to redirect. Please report this issue.</p>';
-                });
-        });
-    </script>
+    <title>Software Homepage</title>
+    <link rel="stylesheet" href="release.css"> <!-- Link to the provided CSS file -->
+    <link rel="stylesheet" href="home.css">
 </head>
 <body>
-    <p>Redirecting to the latest version...</p>
+    <div class="container">
+        <div id="left-column">
+            <div id="software-info">
+                <h1 id="software-name">Software Name</h1>
+                <p id="software-description">Short Description of the Software</p>
+            </div>
+            <div id="readme">
+                <iframe src="README.html"></iframe>
+            </div>
+        </div>
+        <div id="right-column">
+            <h2>Releases</h2>
+            <ul id="release-bar">
+                <li><button id="latest-release">Latest Release</button></li>
+                <!-- Additional releases will be dynamically added here -->
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Fetch version info from webver.json
+        fetch('webver.json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('software-name').textContent = data.name;
+                document.getElementById('software-description').textContent = data.description;
+
+                const releaseBar = document.getElementById('release-bar');
+                const latestRelease = document.getElementById('latest-release');
+
+                latestRelease.textContent = `Latest Release: ${data.latest.version}`;
+                latestRelease.onclick = () => {
+                    window.location.href = data.latest.url;
+                };
+
+                data.previous.forEach(release => {
+                    const li = document.createElement('li');
+                    const button = document.createElement('button');
+                    button.textContent = release.version;
+                    button.onclick = () => {
+                        window.location.href = release.url;
+                    };
+                    li.appendChild(button);
+                    releaseBar.appendChild(li);
+                });
+            });
+    </script>
 </body>
 </html>
