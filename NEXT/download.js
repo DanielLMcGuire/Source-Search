@@ -14,6 +14,11 @@ function closeComingSoonPopup() {
     document.getElementById("comingSoonPopup").style.display = "none";
 }
 
+function sourceCode() {
+    window.location.href = "https://github.com/DanielLMcGuire/Source-Search/archive/refs/tags/1.2.5.zip";
+}
+
+
 function downloadWindows() {
     // Redirect to the Windows download link
     window.location.href = "../dl404.html";

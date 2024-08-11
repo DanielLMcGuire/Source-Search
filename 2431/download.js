@@ -19,6 +19,10 @@ function downloadWindows() {
     window.location.href = "https://github.com/DanielLMcGuire/Source-Search/releases/download/1.2.5/sourcesearchsetup-x86_64-1.2.5.exe";
 }
 
+function sourceCode() {
+    window.location.href = "https://github.com/DanielLMcGuire/Source-Search/archive/refs/tags/1.2.5.zip";
+}
+
 function loadReleaseNotes() {
     fetch('changes.md')
         .then(response => {
