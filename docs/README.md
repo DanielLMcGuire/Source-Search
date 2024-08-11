@@ -1,7 +1,11 @@
+### [Click to Download](https://daniellmcguire.github.io/Source-Search/)
+
+![GitHub Release](https://img.shields.io/github/v/release/DanielLMcGuire/Source-Search) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/DanielLMcGuire/Source-Search/total) ![GitHub License](https://img.shields.io/github/license/DanielLMcGuire/Source-Search) ![](https://img.shields.io/website?url=https%3A%2F%2Fdaniellmcguire.github.io%2FSource-Search%2F)
+
+
+
 # Source Search 
 Source Search is a C++ application designed to scan source code files for specified words, providing contextual lines around each match. Originally written in Python by a friend and ported to C++ by me, this tool is useful for developers and analysts looking to quickly identify specific terms within large codebases.
-
-### [Download](https://daniellmcguire.github.io/Source-Search/)
 
 ## Features
 
