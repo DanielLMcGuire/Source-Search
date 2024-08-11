@@ -15,7 +15,7 @@ function closeComingSoonPopup() {
 }
 
 function sourceCode() {
-    window.location.href = "https://github.com/DanielLMcGuire/Source-Search/archive/refs/tags/1.2.5.zip";
+    window.location.href = "../dl404.html";
 }
 
 
