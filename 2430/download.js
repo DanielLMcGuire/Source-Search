@@ -6,14 +6,6 @@ function closeLinuxPopup() {
     document.getElementById("linuxPopup").style.display = "none";
 }
 
-function showComingSoon() {
-    document.getElementById("comingSoonPopup").style.display = "block";
-}
-
-function closeComingSoonPopup() {
-    document.getElementById("comingSoonPopup").style.display = "none";
-}
-
 function sourceCode() {
     window.location.href = "https://github.com/DanielLMcGuire/Source-Search/archive/refs/tags/1.0.0.zip";
 }
