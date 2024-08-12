@@ -9,7 +9,7 @@ fetch('json/webver.json')
 
     latestRelease.textContent = `Latest Release: ${data.latest.version}`;
     latestRelease.onclick = () => {
-        window.open(`release/${data.latest.url}`, '_blank', 'width=1000,height=800');
+        window.open(`${data.latest.url}`, '_blank', 'width=1000,height=800');
     };
 
     data.previous.forEach(release => {
