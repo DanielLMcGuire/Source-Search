@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="generator" content="Google Web Designer 16.1.0.0530">
+    <meta name="template" content="Expandable 3.0.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Source-Search Homepage</title>
-    <link rel="stylesheet" href="release.css">
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="css/release.css">
+    <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
     <div class="container">
@@ -32,34 +35,7 @@
         <p>&copy; 2024 Daniel McGuire | <a href="https://github.com/DanielLMcGuire/Source-Search" target="_blank">GitHub</a></p>
     </footer>
     
-    <script>
-        // Fetch version info from webver.json
-        fetch('webver.json')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('software-name').textContent = data.name;
-                document.getElementById('software-description').textContent = data.description;
-    
-                const releaseBar = document.getElementById('release-bar');
-                const latestRelease = document.getElementById('latest-release');
-    
-                latestRelease.textContent = `Latest Release: ${data.latest.version}`;
-                latestRelease.onclick = () => {
-                    window.open(data.latest.url, '_blank', 'width=1000,height=800');
-                };
-    
-                data.previous.forEach(release => {
-                    const li = document.createElement('li');
-                    const button = document.createElement('button');
-                    button.textContent = release.version;
-                    button.onclick = () => {
-                        window.open(release.url, '_blank', 'width=800,height=600');
-                    };
-                    li.appendChild(button);
-                    releaseBar.appendChild(li);
-                });
-            });
-    </script>
+    <script src="webver.js"></script>
     
 </body>
 </html>
