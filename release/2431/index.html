@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DL X.X | Source Search</title>
-    <link rel="stylesheet" href="release.css">
+    <title>Version 1.2 | Source Search</title>
+    <link rel="stylesheet" href="../../css/release.css">
     <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Source Search Version Download Template</h1>
+        <h1>Source Search 1.2.5.0.2431</h1>
+        <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/DanielLMcGuire/Source-Search/total"> 
+        <img alt="Licence" src="https://img.shields.io/github/license/DanielLMcGuire/Source-Search">
         <h2>Download for your OS:</h2>
         <div class="download-links">
             <div class="download-button" onclick="downloadWindows()">Download for Windows</div>
@@ -18,6 +20,14 @@
             <div class="download-button" onclick="sourceCode()">Download Source</div>
         </div>
         <div id="release-notes" class="release-notes-container"></div>
+    </div>
+
+    <!-- Countdown Popup -->
+    <div id="countdownPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closeCountdownPopup()">&times;</span>
+            <h2>Starting download in <span id="countdown">10</span> seconds...</h2>
+        </div>
     </div>
 
     <!-- Linux Download Popup -->
@@ -31,11 +41,11 @@
         </div>
     </div>
 
-    <!-- Countdown Popup -->
-    <div id="countdownPopup" class="popup">
+    <!-- Coming Soon Popup -->
+    <div id="comingSoonPopup" class="popup">
         <div class="popup-content">
-            <span class="close" onclick="closeCountdownPopup()">&times;</span>
-            <h2>Starting download in <span id="countdown">10</span> seconds...</h2>
+            <span class="close" onclick="closeComingSoonPopup()">&times;</span>
+            <h2>Coming Soon!</h2>
         </div>
     </div>
 
